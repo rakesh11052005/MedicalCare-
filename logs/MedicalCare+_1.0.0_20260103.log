@@ -1,0 +1,190 @@
+2026-01-03 14:03:42 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 14:03:42 | INFO | src.datasets.pneumonia_dataset | PneumoniaDataset loaded with 5220 samples (Normal: 1345, Pneumonia: 3875)
+2026-01-03 14:03:42 | INFO | src.datasets.base_dataset | BaseXRayDataset initialized with 5220 samples
+2026-01-03 14:08:21 | INFO | __main__ | Starting pneumonia model training
+2026-01-03 14:08:21 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 14:08:21 | INFO | src.datasets.pneumonia_dataset | PneumoniaDataset loaded with 5220 samples (Normal: 1345, Pneumonia: 3875)
+2026-01-03 14:08:21 | INFO | src.datasets.base_dataset | BaseXRayDataset initialized with 5220 samples
+2026-01-03 14:08:21 | INFO | __main__ | Training samples: 5220
+2026-01-03 14:08:21 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 14:08:21 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 14:08:21 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 14:08:37 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 14:08:37 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 14:08:37 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 14:08:37 | INFO | __main__ | Model built successfully
+2026-01-03 14:13:39 | INFO | __main__ | Starting pneumonia model training
+2026-01-03 14:13:39 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 14:13:39 | INFO | src.datasets.pneumonia_dataset | PneumoniaDataset loaded with 5220 samples (Normal: 1345, Pneumonia: 3875)
+2026-01-03 14:13:39 | INFO | src.datasets.base_dataset | BaseXRayDataset initialized with 5220 samples
+2026-01-03 14:13:39 | INFO | __main__ | Training samples: 5220
+2026-01-03 14:13:39 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 14:13:39 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 14:13:39 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 14:13:39 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 14:13:39 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 14:13:39 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 14:13:39 | INFO | __main__ | Model built successfully
+2026-01-03 14:15:45 | INFO | __main__ | Starting pneumonia model training
+2026-01-03 14:15:45 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 14:15:45 | INFO | src.datasets.pneumonia_dataset | PneumoniaDataset loaded with 5220 samples (Normal: 1345, Pneumonia: 3875)
+2026-01-03 14:15:45 | INFO | src.datasets.base_dataset | BaseXRayDataset initialized with 5220 samples
+2026-01-03 14:15:45 | INFO | __main__ | Training samples: 5220
+2026-01-03 14:15:45 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 14:15:45 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 14:15:45 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 14:15:46 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 14:15:46 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 14:15:46 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 14:15:46 | INFO | __main__ | Model built successfully
+2026-01-03 14:16:58 | INFO | __main__ | Starting pneumonia model training
+2026-01-03 14:16:58 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 14:16:58 | INFO | src.datasets.pneumonia_dataset | PneumoniaDataset loaded with 5220 samples (Normal: 1345, Pneumonia: 3875)
+2026-01-03 14:16:58 | INFO | src.datasets.base_dataset | BaseXRayDataset initialized with 5220 samples
+2026-01-03 14:16:58 | INFO | __main__ | Training samples: 5220
+2026-01-03 14:16:58 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 14:16:58 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 14:16:58 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 14:16:58 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 14:16:58 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 14:16:58 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 14:16:58 | INFO | __main__ | Model built successfully
+2026-01-03 14:24:03 | INFO | __main__ | Epoch [1/20] - Average Loss: 0.4522
+2026-01-03 14:31:12 | INFO | __main__ | Epoch [2/20] - Average Loss: 0.2965
+2026-01-03 14:37:59 | INFO | __main__ | Epoch [3/20] - Average Loss: 0.2438
+2026-01-03 14:44:27 | INFO | __main__ | Epoch [4/20] - Average Loss: 0.2178
+2026-01-03 14:51:12 | INFO | __main__ | Epoch [5/20] - Average Loss: 0.1958
+2026-01-03 14:57:49 | INFO | __main__ | Epoch [6/20] - Average Loss: 0.1816
+2026-01-03 15:04:27 | INFO | __main__ | Epoch [7/20] - Average Loss: 0.1696
+2026-01-03 15:11:49 | INFO | __main__ | Epoch [8/20] - Average Loss: 0.1654
+2026-01-03 15:19:59 | INFO | __main__ | Epoch [9/20] - Average Loss: 0.1560
+2026-01-03 15:28:08 | INFO | __main__ | Epoch [10/20] - Average Loss: 0.1524
+2026-01-03 15:36:12 | INFO | __main__ | Epoch [11/20] - Average Loss: 0.1525
+2026-01-03 15:43:19 | INFO | __main__ | Epoch [12/20] - Average Loss: 0.1457
+2026-01-03 15:51:23 | INFO | __main__ | Epoch [13/20] - Average Loss: 0.1403
+2026-01-03 15:59:24 | INFO | __main__ | Epoch [14/20] - Average Loss: 0.1314
+2026-01-03 16:08:45 | INFO | __main__ | Epoch [15/20] - Average Loss: 0.1374
+2026-01-03 16:15:22 | INFO | __main__ | Epoch [16/20] - Average Loss: 0.1348
+2026-01-03 16:23:04 | INFO | __main__ | Epoch [17/20] - Average Loss: 0.1280
+2026-01-03 16:30:53 | INFO | __main__ | Epoch [18/20] - Average Loss: 0.1297
+2026-01-03 16:39:38 | INFO | __main__ | Epoch [19/20] - Average Loss: 0.1317
+2026-01-03 16:48:33 | INFO | __main__ | Epoch [20/20] - Average Loss: 0.1256
+2026-01-03 16:48:34 | INFO | __main__ | Training completed. Model saved at: models/pneumonia/v1.0.0\model.pt
+2026-01-03 17:01:59 | INFO | __main__ | Starting pneumonia model evaluation
+2026-01-03 17:01:59 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 17:01:59 | ERROR | src.datasets.pneumonia_dataset | Expected folder not found: data/pneumonia/test\normal
+2026-01-03 17:10:41 | INFO | __main__ | Starting pneumonia model evaluation
+2026-01-03 17:10:41 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 17:10:41 | ERROR | src.datasets.pneumonia_dataset | Expected folder not found: data/pneumonia/test\normal
+2026-01-03 17:19:03 | INFO | __main__ | Starting pneumonia model evaluation
+2026-01-03 17:19:03 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 17:19:28 | INFO | __main__ | Starting pneumonia model evaluation
+2026-01-03 17:19:28 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 17:22:36 | INFO | __main__ | Starting pneumonia model evaluation
+2026-01-03 17:22:36 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 17:28:33 | INFO | __main__ | Starting pneumonia model evaluation
+2026-01-03 17:28:33 | INFO | src.datasets.pneumonia_dataset | Initializing PneumoniaDataset
+2026-01-03 17:28:33 | INFO | src.datasets.pneumonia_dataset | PneumoniaDataset loaded from CSV with 784 samples (Normal: 203, Pneumonia: 581)
+2026-01-03 17:28:33 | INFO | src.datasets.base_dataset | BaseXRayDataset initialized with 784 samples
+2026-01-03 17:28:33 | INFO | __main__ | Test samples: 784
+2026-01-03 17:28:33 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 17:28:33 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 17:28:33 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 17:28:33 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 17:28:33 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 17:28:33 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 17:28:34 | INFO | __main__ | Model loaded successfully
+2026-01-03 17:29:28 | INFO | __main__ | Accuracy     : 0.9745
+2026-01-03 17:29:28 | INFO | __main__ | Precision    : 0.9845
+2026-01-03 17:29:28 | INFO | __main__ | Recall       : 0.9811
+2026-01-03 17:29:28 | INFO | __main__ | Confusion Matrix:
+2026-01-03 17:29:28 | INFO | __main__ | 
+[[194   9]
+ [ 11 570]]
+2026-01-03 17:29:28 | INFO | src.evaluation.calibration | ProbabilityCalibrator initialized with 10 bins
+2026-01-03 17:29:28 | INFO | src.evaluation.calibration | Expected Calibration Error (ECE): 0.0296
+2026-01-03 17:29:28 | INFO | __main__ | Expected Calibration Error (ECE): 0.0296
+2026-01-03 17:29:28 | INFO | __main__ | Evaluation completed successfully
+2026-01-03 17:42:51 | INFO | __main__ | Starting single-image prediction
+2026-01-03 17:48:06 | INFO | __main__ | Starting single-image prediction
+2026-01-03 17:48:06 | INFO | __main__ | Resolved image path: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\pneumonia\<person1000_virus_1681.jpeg>.jpeg
+2026-01-03 17:49:20 | INFO | __main__ | Starting single-image prediction
+2026-01-03 17:49:20 | INFO | __main__ | Resolved image path: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\pneumonia\person1000_bacteria_2931.jpeg
+2026-01-03 17:49:20 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 17:49:20 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 17:49:20 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 17:49:20 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 17:49:20 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 17:49:20 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 17:49:20 | INFO | __main__ | Model loaded successfully
+2026-01-03 17:49:52 | INFO | __main__ | Starting single-image prediction
+2026-01-03 17:49:52 | INFO | __main__ | Resolved image path: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\pneumonia\person1000_virus_1681.jpeg
+2026-01-03 17:49:52 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 17:49:52 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 17:49:52 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 17:49:52 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 17:49:52 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 17:49:52 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 17:49:52 | INFO | __main__ | Model loaded successfully
+2026-01-03 17:50:04 | INFO | __main__ | Starting single-image prediction
+2026-01-03 17:50:04 | INFO | __main__ | Resolved image path: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\normal\IM-0001-0001.jpeg
+2026-01-03 17:54:18 | INFO | __main__ | Starting single-image prediction
+2026-01-03 17:54:18 | INFO | __main__ | Resolved image path: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\pneumonia\person1000_bacteria_2931.jpeg
+2026-01-03 17:54:18 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 17:54:18 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 17:54:18 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 17:54:18 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 17:54:18 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 17:54:18 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 17:54:18 | INFO | __main__ | Model loaded successfully
+2026-01-03 17:54:18 | INFO | src.inference.safety | Running safety_check on probability output
+2026-01-03 18:20:19 | INFO | __main__ | Starting Grad-CAM explanation
+2026-01-03 18:20:19 | INFO | __main__ | Image path resolved to: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\pneumonia\person1000_bacteria_2931.jpeg
+2026-01-03 18:20:19 | INFO | __main__ | Model path resolved to: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\models\pneumonia\v1.0.0\model.pt
+2026-01-03 18:20:19 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 18:20:19 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 18:20:19 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 18:20:19 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 18:20:19 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 18:20:19 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 18:22:58 | INFO | __main__ | Starting Grad-CAM explanation
+2026-01-03 18:22:58 | INFO | __main__ | Image path resolved to: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\pneumonia\person1000_bacteria_2931.jpeg
+2026-01-03 18:22:58 | INFO | __main__ | Model path resolved to: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\models\pneumonia\v1.0.0\model.pt
+2026-01-03 18:22:58 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 18:22:58 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 18:22:58 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 18:22:58 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 18:22:58 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 18:22:58 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 18:22:58 | INFO | __main__ | Model loaded successfully (strict=False)
+2026-01-03 18:22:58 | INFO | src.explainability.gradcam | Grad-CAM hooks registered on target layer
+2026-01-03 18:22:58 | INFO | src.explainability.gradcam | Grad-CAM initialized successfully
+2026-01-03 18:22:58 | INFO | src.explainability.gradcam | Running Grad-CAM forward & backward pass
+2026-01-03 18:23:21 | INFO | __main__ | Starting Grad-CAM explanation
+2026-01-03 18:23:21 | INFO | __main__ | Image path resolved to: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\pneumonia\person1000_bacteria_2931.jpeg
+2026-01-03 18:23:21 | INFO | __main__ | Model path resolved to: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\models\pneumonia\v1.0.0\model.pt
+2026-01-03 18:23:21 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 18:23:21 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 18:23:21 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 18:23:21 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 18:23:21 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 18:23:21 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 18:23:21 | INFO | __main__ | Model loaded successfully (strict=False)
+2026-01-03 18:23:21 | INFO | src.explainability.gradcam | Grad-CAM hooks registered on target layer
+2026-01-03 18:23:21 | INFO | src.explainability.gradcam | Grad-CAM initialized successfully
+2026-01-03 18:23:21 | INFO | src.explainability.gradcam | Running Grad-CAM forward & backward pass
+2026-01-03 18:26:50 | INFO | __main__ | Starting Grad-CAM explanation
+2026-01-03 18:26:50 | INFO | __main__ | Image path resolved to: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\data\raw\pneumonia\pneumonia\person1000_bacteria_2931.jpeg
+2026-01-03 18:26:50 | INFO | __main__ | Model path resolved to: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\models\pneumonia\v1.0.0\model.pt
+2026-01-03 18:26:50 | INFO | src.models.model_factory | Creating pneumonia model via factory
+2026-01-03 18:26:50 | INFO | src.models.model_factory | Building PneumoniaModel
+2026-01-03 18:26:50 | INFO | src.models.backbones.densenet121 | Initializing DenseNet-121 backbone
+2026-01-03 18:26:51 | INFO | src.models.backbones.densenet121 | Freezing DenseNet-121 backbone layers
+2026-01-03 18:26:51 | INFO | src.models.heads.pneumonia_head | Initializing Pneumonia classification head
+2026-01-03 18:26:51 | INFO | src.models.model_factory | PneumoniaModel built successfully
+2026-01-03 18:26:51 | INFO | __main__ | Model loaded successfully (strict=False)
+2026-01-03 18:26:51 | INFO | src.explainability.gradcam | Grad-CAM hooks registered on target layer
+2026-01-03 18:26:51 | INFO | src.explainability.gradcam | Grad-CAM initialized successfully
+2026-01-03 18:26:51 | INFO | src.explainability.gradcam | Running Grad-CAM forward & backward pass
+2026-01-03 18:26:51 | INFO | src.explainability.gradcam | Grad-CAM heatmap generated successfully
+2026-01-03 18:26:51 | INFO | __main__ | Grad-CAM saved at: C:\Users\rakes\Documents\PROJECTS\MedicalCare+\outputs\gradcam\person1000_bacteria_2931_gradcam.png

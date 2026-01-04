@@ -1,0 +1,109 @@
+{
+  "project": {
+    "name": "MedicalCare+",
+    "description": "AI-assisted chest X-ray analysis system for multi-disease radiological findings",
+    "medical_disclaimer": "This system provides AI-assisted findings only. It does NOT provide medical diagnoses. All outputs must be reviewed by a qualified clinician.",
+    "owner": "MedicalCare+ Core Team",
+    "regulatory_status": "Research / Decision-Support (Not a Medical Device)",
+    "last_updated": "2026-01-03"
+  },
+
+  "models": {
+    "pneumonia": {
+      "task_type": "single_disease_binary_classification",
+      "findings": ["Pneumonia"],
+      "current_production_version": "v1.0.0",
+      "versions": {
+        "v1.0.0": {
+          "status": "production",
+          "model_path": "models/pneumonia/v1.0.0/model.pt",
+          "training_data": "Chest X-Ray Images (Pneumonia) Dataset",
+          "architecture": {
+            "backbone": "DenseNet121",
+            "head": "PneumoniaHead"
+          },
+          "input_spec": {
+            "image_size": [224, 224],
+            "channels": 3,
+            "modality": "Chest X-ray"
+          },
+          "output_spec": {
+            "type": "binary_logit",
+            "activation": "sigmoid (applied externally)",
+            "finding": "Pneumonia"
+          },
+          "metrics": {
+            "accuracy": 0.97,
+            "precision": 0.98,
+            "recall": 0.98,
+            "ece": 0.03
+          },
+          "safety": {
+            "abstention_supported": true,
+            "confidence_thresholds": {
+              "low": 0.30,
+              "high": 0.70
+            }
+          },
+          "explainability": {
+            "method": "Grad-CAM",
+            "supported": true
+          },
+          "notes": "Baseline pneumonia detection model. Clinically conservative thresholds applied."
+        }
+      }
+    },
+
+    "multidisease": {
+      "task_type": "multi_label_finding_detection",
+      "findings": [
+        "Pneumonia",
+        "Tuberculosis",
+        "COVID-19",
+        "Lung Opacity"
+      ],
+      "current_production_version": "v1.0.0",
+      "versions": {
+        "v1.0.0": {
+          "status": "research",
+          "model_path": "models/multidisease/v1.0.0/model.pt",
+          "training_data": "Unified Chest X-ray Dataset (CSV-based, multi-source)",
+          "architecture": {
+            "backbone": "DenseNet121",
+            "head": "MultiDiseaseHead"
+          },
+          "input_spec": {
+            "image_size": [224, 224],
+            "channels": 3,
+            "modality": "Chest X-ray"
+          },
+          "output_spec": {
+            "type": "multi_label_logits",
+            "activation": "sigmoid (applied externally)",
+            "num_findings": 4
+          },
+          "safety": {
+            "abstention_supported": true,
+            "per_finding_thresholds": {
+              "Pneumonia": [0.30, 0.70],
+              "Tuberculosis": [0.35, 0.75],
+              "COVID-19": [0.40, 0.80],
+              "Lung Opacity": [0.30, 0.70]
+            }
+          },
+          "explainability": {
+            "method": "Grad-CAM",
+            "supported": true,
+            "note": "Grad-CAM generated per input image, interpreted per finding"
+          },
+          "deployment_policy": {
+            "default_mode": "clinical",
+            "auto_abstain_on_uncertainty": true,
+            "hard_diagnosis_disabled": true
+          },
+          "notes": "Unified multi-disease finding model. Outputs possible findings with uncertainty handling."
+        }
+      }
+    }
+  }
+}

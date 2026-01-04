@@ -1,0 +1,92 @@
+# =========================================
+# Global Configuration
+# Project: MedicalCare+
+# =========================================
+
+project:
+  name: "MedicalCare+"
+  organization: "MedicalCare+ Research"
+  description: "Clinical decision support system for medical image analysis"
+  default_language: "en"
+
+# -----------------------------------------
+# Runtime & Environment
+# -----------------------------------------
+runtime:
+  device: "cpu"          # options: cpu | cuda
+  num_workers: 2
+  deterministic: true    # ensures reproducibility
+  seed: 42
+
+# -----------------------------------------
+# Default Image Preprocessing
+# -----------------------------------------
+preprocessing:
+  image_height: 224
+  image_width: 224
+  channels: 1
+  normalize: true
+  grayscale: true
+
+# -----------------------------------------
+# Logging Configuration
+# -----------------------------------------
+logging:
+  level: "INFO"          # DEBUG | INFO | WARNING | ERROR
+  log_to_console: true
+  log_to_file: true
+  log_directory: "logs"
+  log_format: "%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+
+# -----------------------------------------
+# Safety Philosophy (Global Defaults)
+# -----------------------------------------
+safety:
+  enable_safety_checks: true
+  default_behavior: "conservative"   # conservative | permissive
+  reject_on_low_confidence: true
+  human_review_required: true
+
+# -----------------------------------------
+# Explainability Defaults
+# -----------------------------------------
+explainability:
+  enabled: true
+  default_method: "grad_cam"
+  overlay_alpha: 0.4
+  save_explanations: false
+
+# -----------------------------------------
+# Model Management
+# -----------------------------------------
+model_registry:
+  base_directory: "models"
+  enable_versioning: true
+  save_config_with_model: true
+  save_metrics_with_model: true
+
+# -----------------------------------------
+# Evaluation Defaults
+# -----------------------------------------
+evaluation:
+  primary_metric: "recall"
+  require_calibration: true
+  max_allowed_ece: 0.05
+
+# -----------------------------------------
+# Deployment Mode
+# -----------------------------------------
+deployment:
+  mode: "research"       # research | clinical | production
+  allow_cli_usage: true
+  allow_api_usage: true
+  allow_batch_inference: true
+
+# -----------------------------------------
+# Compliance & Governance
+# -----------------------------------------
+governance:
+  ethics_required: true
+  limitations_required: true
+  dataset_documentation_required: true
+  model_card_required: true

@@ -1,0 +1,96 @@
+# =========================================
+# Pneumonia Model Configuration
+# Project: MedicalCare+
+# =========================================
+
+project:
+  name: "MedicalCare+"
+  disease: "Pneumonia"
+  model_version: "v1.0.0"
+
+# -----------------------------------------
+# Dataset Configuration
+# -----------------------------------------
+dataset:
+  modality: "chest_xray"
+  train_dir: "data/raw/pneumonia"
+  val_dir: "data/raw/pneumonia"
+  test_dir: "data/raw/pneumonia"
+
+  classes:
+    - normal
+    - pneumonia
+
+# -----------------------------------------
+# Image Preprocessing
+# -----------------------------------------
+preprocessing:
+  image_height: 224
+  image_width: 224
+  channels: 1
+  normalize: true
+
+# -----------------------------------------
+# Model Configuration
+# -----------------------------------------
+model:
+  backbone: "densenet121"
+  pretrained: true
+  freeze_backbone: true
+  head: "pneumonia_head"
+  output_classes: 1
+
+# -----------------------------------------
+# Training Configuration
+# -----------------------------------------
+training:
+  batch_size: 16
+  epochs: 20
+  learning_rate: 0.0001
+  optimizer: "adam"
+  loss_function: "bce_with_logits"
+
+  # Weight positive class higher to avoid missing pneumonia
+  positive_class_weight: null   # set e.g. 2.0 if dataset is imbalanced
+
+# -----------------------------------------
+# Evaluation Configuration
+# -----------------------------------------
+evaluation:
+  primary_metric: "recall"
+  secondary_metrics:
+    - precision
+    - accuracy
+    - specificity
+  calibration_bins: 10
+
+# -----------------------------------------
+# Safety & Decision Thresholds
+# -----------------------------------------
+safety:
+  low_confidence_threshold: 0.30
+  high_confidence_threshold: 0.70
+  allow_uncertain: true
+
+# -----------------------------------------
+# Explainability
+# -----------------------------------------
+explainability:
+  method: "grad_cam"
+  target_layer: "backbone.features"
+
+# -----------------------------------------
+# Saving & Versioning
+# -----------------------------------------
+output:
+  model_dir: "models/pneumonia/v1.0.0"
+  save_weights: true
+  save_metrics: true
+  save_config_copy: true
+
+# -----------------------------------------
+# Logging
+# -----------------------------------------
+logging:
+  level: "INFO"
+  log_to_file: true
