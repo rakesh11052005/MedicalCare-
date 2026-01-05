@@ -1,15 +1,16 @@
-# File: MedicalCare+/src/common/constants.py
-
 """
 constants.py
 
 Centralized configuration for MedicalCare+.
 
+CRITICAL ROLE:
+- Single source of truth for ALL tasks
+- Governs model wiring, loss selection, metrics, safety
+- Must remain task-explicit and audit-safe
+
 Design principles:
-- Single source of truth
-- Clinically safe defaults
-- Supports multi-disease inference
-- Allows user-selected or automatic findings
+- Clinically conservative defaults
+- Explicit task separation (NO ambiguity)
 - Findings ≠ Diagnoses (regulatory safe)
 """
 
@@ -21,19 +22,18 @@ PROJECT_NAME = "MedicalCare+"
 PROJECT_VERSION = "1.0.0"
 
 # ==================================================
-# IMAGE PROCESSING
+# IMAGE PROCESSING (SHARED)
 # ==================================================
 
 # Standard input resolution (ImageNet compatible)
 IMAGE_HEIGHT = 224
 IMAGE_WIDTH = 224
 
-# Model input channels
-# X-rays are grayscale → replicated to 3 channels
+# All modalities are converted to 3-channel input
 IMAGE_CHANNELS = 3
 
 # ==================================================
-# TRAINING CONFIGURATION
+# TRAINING DEFAULTS (SAFE BASELINES)
 # ==================================================
 
 BATCH_SIZE = 16
@@ -50,53 +50,76 @@ RANDOM_SEED = 42
 DEPLOYMENT_MODE = "clinical"
 
 # ==================================================
-# MULTI-DISEASE / FINDINGS CONFIGURATION
+# TASK REGISTRY (CRITICAL)
+# ==================================================
+
+"""
+ALL supported tasks MUST be declared here.
+No task string should be invented elsewhere.
+"""
+
+TASK_PNEUMONIA = "pneumonia"
+TASK_MULTIDISEASE = "multidisease"
+TASK_BRAIN_MRI = "brain_mri"
+
+SUPPORTED_TASKS = [
+    TASK_PNEUMONIA,
+    TASK_MULTIDISEASE,
+    TASK_BRAIN_MRI,
+]
+
+# ==================================================
+# CHEST X-RAY — MULTI-DISEASE (MULTI-LABEL)
 # ==================================================
 
 """
 IMPORTANT:
 These are FINDINGS, not diagnoses.
-The system scans for all by default.
-User may optionally request a subset.
+They are NOT mutually exclusive.
 """
 
-FINDINGS = [
+XRAY_FINDINGS = [
     "Pneumonia",
     "Tuberculosis",
     "COVID-19",
     "Lung Opacity",
 ]
 
-NUM_FINDINGS = len(FINDINGS)
+NUM_XRAY_FINDINGS = len(XRAY_FINDINGS)
 
-# --------------------------------------------------
-# Canonical model-facing constants
-# --------------------------------------------------
+# Backward compatibility aliases (DO NOT REMOVE)
+FINDINGS = XRAY_FINDINGS
+DISEASES = XRAY_FINDINGS
+NUM_FINDINGS = NUM_XRAY_FINDINGS
+NUM_DISEASES = NUM_XRAY_FINDINGS
 
-# Multidisease X-ray is multi-label (findings are NOT mutually exclusive)
+# Multi-disease X-ray is multi-label by definition
 MULTILABEL = True
 
-# Model output dimensionality (EXPECTED BY model_factory, losses, metrics)
-NUM_CLASSES = NUM_FINDINGS
-
-# Backward compatibility aliases
-DISEASES = FINDINGS
-NUM_DISEASES = NUM_FINDINGS
-
 # ==================================================
-# USER SELECTION POLICY
+# BRAIN MRI — MULTI-CLASS (MUTUALLY EXCLUSIVE)
 # ==================================================
 
 """
-USER_SELECTION_MODE:
-
-- "auto" → model evaluates ALL findings (default)
-- "selected" → user provides a subset of findings
+Brain MRI task characteristics:
+- Exactly ONE class per image
+- Uses softmax + CrossEntropyLoss
 """
+
+BRAIN_MRI_CLASSES = [
+    "Normal",
+    "Glioma",
+    "Meningioma",
+    "Pituitary",
+]
+
+NUM_BRAIN_MRI_CLASSES = len(BRAIN_MRI_CLASSES)
+
+# ==================================================
+# USER SELECTION POLICY (XRAY ONLY)
+# ==================================================
 
 DEFAULT_SELECTION_MODE = "auto"
-
-# Special keyword meaning "evaluate everything"
 ALL_FINDINGS_KEYWORD = "ALL"
 
 # ==================================================
@@ -104,11 +127,10 @@ ALL_FINDINGS_KEYWORD = "ALL"
 # ==================================================
 
 """
-Threshold semantics per finding:
-
-probability <= LOW  → Unlikely
-LOW < prob < HIGH   → Uncertain (abstain)
-probability >= HIGH → Likely
+X-RAY FINDING THRESHOLDS
+(probability <= LOW  → Unlikely
+ LOW < prob < HIGH   → Uncertain
+ prob >= HIGH        → Likely)
 """
 
 FINDING_THRESHOLDS = {
@@ -118,24 +140,22 @@ FINDING_THRESHOLDS = {
     "Lung Opacity": (0.30, 0.70),
 }
 
-# Global fallback thresholds
+# --------------------------------------------------
+# GLOBAL CONFIDENCE THRESHOLDS (TASK-AGNOSTIC)
+# --------------------------------------------------
+
 LOW_CONFIDENCE_THRESHOLD = 0.30
 HIGH_CONFIDENCE_THRESHOLD = 0.70
 
-# ==================================================
-# UNCERTAINTY / ABSTENTION POLICY
-# ==================================================
-
-"""
-Hard abstention zone (never produce strong claims here)
-Used by safety layer and evaluation
-"""
+# --------------------------------------------------
+# HARD ABSTENTION ZONE (ALL TASKS)
+# --------------------------------------------------
 
 UNCERTAINTY_LOWER = 0.20
 UNCERTAINTY_UPPER = 0.80
 
 # ==================================================
-# OUTPUT TERMINOLOGY (CLINICAL SAFE)
+# OUTPUT TERMINOLOGY (CLINICALLY SAFE)
 # ==================================================
 
 STATUS_LIKELY = "Likely"
@@ -153,6 +173,6 @@ CONFIDENCE_LOW = "Low"
 
 DISCLAIMER_TEXT = (
     "This output is NOT a diagnosis. "
-    "It is an AI-assisted radiological analysis "
+    "It represents AI-assisted medical image analysis "
     "and must be reviewed by a qualified clinician."
 )

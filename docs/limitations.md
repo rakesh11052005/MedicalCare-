@@ -2,8 +2,9 @@
 
 ## 1. Overview
 
-MedicalCare+ is a machine learning–based clinical decision support system
-designed to assist healthcare professionals in analyzing chest X-ray images.
+MedicalCare+ is a machine learning–based **clinical decision support system**
+designed to assist healthcare professionals in analyzing medical imaging data,
+including **chest X-ray images and brain MRI scans**.
 
 Despite careful design and validation, MedicalCare+ has inherent limitations.
 Understanding these limitations is critical for safe and responsible use.
@@ -16,7 +17,7 @@ MedicalCare+ does NOT provide medical diagnoses.
 
 - The system outputs probability-based assessments only
 - Final diagnosis must always be made by a qualified healthcare professional
-- MedicalCare+ should never be used as the sole basis for treatment decisions
+- MedicalCare+ must never be used as the sole basis for treatment decisions
 
 The system is an **assistive tool**, not a replacement for clinical expertise.
 
@@ -24,28 +25,43 @@ The system is an **assistive tool**, not a replacement for clinical expertise.
 
 ## 3. Imaging Modality Limitations
 
-MedicalCare+ is limited to **chest X-ray images only**.
+MedicalCare+ supports a **limited set of imaging modalities**:
 
-As a result:
-- Diseases not visible on X-rays cannot be detected
+### Supported Modalities
+- Chest X-ray (2D)
+- Brain MRI (2D slices)
+
+### Modality Constraints
+- Diseases not visible in the provided imaging modality cannot be detected
 - Subtle or early-stage abnormalities may be missed
-- Conditions requiring CT, MRI, or lab tests are outside the system’s scope
+- The system does not analyze:
+  - CT scans
+  - Ultrasound
+  - Pathology slides
+  - Laboratory or clinical records
 
-The system does not integrate multi-modal data at this stage.
+MedicalCare+ does **not** perform multi-modal fusion at this stage.
 
 ---
 
-## 4. Disease Scope Limitations
+## 4. Disease & Task Scope Limitations
 
-Current limitations include:
-- Support for a limited number of diseases at a time
-- Each disease model is trained independently
-- The system does not provide differential diagnoses
+MedicalCare+ supports a **limited and predefined set of tasks**:
 
-MedicalCare+ does not identify:
-- Disease causes (e.g., viral vs bacterial)
-- Disease severity stages
-- Treatment recommendations
+### Chest X-ray Models
+- Detect specific radiological findings
+- Treat each finding independently (multi-label)
+- Do not provide differential diagnoses
+
+### Brain MRI Models
+- Perform **multi-class classification** on 2D MRI slices
+- Do NOT perform:
+  - Tumor segmentation
+  - Tumor grading or staging
+  - Progression or longitudinal analysis
+  - Surgical or treatment planning
+
+The system does not determine disease causes or recommend treatments.
 
 ---
 
@@ -54,11 +70,11 @@ MedicalCare+ does not identify:
 Model performance depends heavily on training data.
 
 Potential issues include:
-- Dataset imbalance between normal and disease cases
+- Dataset imbalance across classes or findings
 - Limited demographic diversity in public datasets
-- Variability in image quality across devices and hospitals
+- Variability in image quality, scanners, and acquisition protocols
 
-These factors may affect generalization to unseen populations.
+These factors may reduce generalization to unseen populations or institutions.
 
 ---
 
@@ -67,8 +83,9 @@ These factors may affect generalization to unseen populations.
 Although MedicalCare+ includes calibration and safety checks:
 
 - Confidence scores are probabilistic estimates, not guarantees
-- Some predictions may be marked as “Uncertain”
-- Low-confidence outputs should always prompt human review
+- Some predictions may be marked as **“Uncertain”**
+- The system may abstain from making a recommendation
+- Low-confidence outputs must always prompt human review
 
 Uncertainty handling is intentional and prioritizes patient safety.
 
@@ -76,11 +93,11 @@ Uncertainty handling is intentional and prioritizes patient safety.
 
 ## 7. Bias & Fairness Constraints
 
-MedicalCare+ acknowledges the risk of bias.
+MedicalCare+ acknowledges the risk of bias in medical AI systems.
 
 Limitations include:
 - Incomplete representation of global populations
-- Potential bias introduced by dataset collection practices
+- Potential bias from dataset collection practices
 - Limited subgroup performance analysis in early versions
 
 Bias monitoring and mitigation are ongoing efforts.
@@ -91,11 +108,11 @@ Bias monitoring and mitigation are ongoing efforts.
 
 While explainability tools (e.g., Grad-CAM) are provided:
 
-- Heatmaps indicate regions of influence, not causation
+- Heatmaps indicate regions influencing the model, not causation
 - Highlighted regions do not guarantee pathological relevance
-- Explainability outputs require clinical interpretation
+- Explainability outputs require expert clinical interpretation
 
-Explainability is a support mechanism, not definitive proof.
+Explainability is a support mechanism, not definitive evidence.
 
 ---
 
@@ -112,7 +129,7 @@ Deployment-specific validation is required before clinical use.
 
 ## 10. Regulatory & Legal Limitations
 
-MedicalCare+ is not certified as a medical device.
+MedicalCare+ is **not certified as a medical device**.
 
 - Regulatory approval may be required before clinical deployment
 - Compliance with local healthcare regulations is mandatory
@@ -129,7 +146,7 @@ MedicalCare+ is under continuous development.
 Limitations may be:
 - Reduced through additional data
 - Addressed through model improvements
-- Updated through clinical feedback
+- Updated through clinician feedback
 
 This document will evolve alongside the system.
 
@@ -139,7 +156,7 @@ This document will evolve alongside the system.
 
 MedicalCare+ is designed with transparency and caution.
 
-> Awareness of limitations is essential to safe and ethical use.
+> Awareness of limitations is essential to safe and ethical use.  
 > Ignoring system limitations can lead to misuse and harm.
 
 Users are expected to review and understand this document

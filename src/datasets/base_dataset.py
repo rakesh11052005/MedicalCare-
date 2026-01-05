@@ -1,5 +1,3 @@
-# File: MedicalCare+/src/datasets/base_dataset.py
-
 """
 base_dataset.py
 
@@ -7,11 +5,11 @@ Base dataset abstraction for MedicalCare+.
 
 Industrial & clinical guarantees:
 - Centralized image loading logic
-- Dataset-agnostic (single-disease or multi-disease)
+- Dataset-agnostic (single-disease, multi-disease, multi-class)
 - Deterministic indexing
 - Safe failure modes
 - Compatible with training, evaluation, inference, and explainability
-- Extensible to future modalities (CT, MRI, DICOM)
+- Modality-agnostic (Chest X-ray, Brain MRI, future CT / DICOM)
 
 This class MUST NOT contain disease-specific logic.
 """
@@ -32,17 +30,22 @@ logger = setup_logger(__name__)
 
 class BaseXRayDataset(Dataset):
     """
-    Base PyTorch Dataset for chest X-ray images.
+    Base PyTorch Dataset for medical image classification.
+
+    Supported modalities:
+        - Chest X-ray
+        - Brain MRI (2D slices)
+        - Future extensions (CT, DICOM)
 
     Child datasets must only provide:
-    - image_paths: List[str]
-    - labels: List[int] OR List[Tensor]
-    - optional image_loader override
+        - image_paths: List[str]
+        - labels: List[int] OR List[Tensor]
+        - optional image_loader override
 
     This class handles:
-    - Image loading
-    - Image validation
-    - Tensor normalization
+        - Image loading
+        - Image validation
+        - Tensor normalization
     """
 
     def __init__(
@@ -56,15 +59,15 @@ class BaseXRayDataset(Dataset):
 
         Args:
             image_paths (List[str]):
-                Absolute or relative paths to X-ray images
+                Absolute or relative paths to medical images
 
             labels (List[int] | List[torch.Tensor]):
-                - int → single-label classification
+                - int → single-label / multi-class
                 - Tensor → multi-label (multi-disease)
 
             image_loader (Callable, optional):
                 Custom image loading function.
-                Defaults to load_xray_image.
+                Defaults to shared load_xray_image().
         """
 
         if len(image_paths) != len(labels):
@@ -84,7 +87,8 @@ class BaseXRayDataset(Dataset):
         self.image_loader = image_loader or load_xray_image
 
         logger.info(
-            f"BaseXRayDataset initialized with {len(self.image_paths)} samples"
+            f"BaseMedicalImageDataset initialized with "
+            f"{len(self.image_paths)} samples"
         )
 
     def __len__(self) -> int:
@@ -103,7 +107,7 @@ class BaseXRayDataset(Dataset):
 
             label (torch.Tensor):
                 Shape:
-                - ()     for single-label
+                - ()     for single-label / multi-class
                 - (N,)   for multi-label
         """
 

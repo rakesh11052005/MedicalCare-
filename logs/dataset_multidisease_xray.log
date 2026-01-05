@@ -1,0 +1,12 @@
+2026-01-05 15:39:08 | INFO    | 37252 | MainThread | dataset.multidisease_xray | MedicalCare+ v1.0.0 logger initialized
+2026-01-05 15:39:08 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Starting multi-disease X-ray dataset generation
+2026-01-05 15:39:08 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Task=multidisease, Modality=xray
+2026-01-05 15:39:08 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Scanning raw X-ray dataset
+2026-01-05 15:39:09 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Discovered 23659 X-ray images
+2026-01-05 15:39:09 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Dataset fingerprint (SHA-256): cb2100d1351cb6efc394e92704216d0fd06b240dd5046baf6e1f7d42b34a4551
+2026-01-05 15:39:09 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Findings: ['Pneumonia', 'Tuberculosis', 'COVID-19', 'Lung Opacity']
+2026-01-05 15:39:09 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Wrote 16561 samples → data\splits\xray\multidisease_xray_train.csv
+2026-01-05 15:39:09 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Wrote 3548 samples → data\splits\xray\multidisease_xray_val.csv
+2026-01-05 15:39:09 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Wrote 3550 samples → data\splits\xray\multidisease_xray_test.csv
+2026-01-05 15:39:09 | INFO    | 37252 | MainThread | dataset.multidisease_xray | Dataset generation completed successfully
+2026-01-05 15:39:09 | INFO    | 37252 | MainThread | dataset.multidisease_xray | IMPORTANT: Dataset encodes FINDINGS, not diagnoses

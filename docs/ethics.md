@@ -16,9 +16,10 @@ of this project.
 ## 2. Intended Use
 
 MedicalCare+ is intended to:
-- Assist doctors and radiologists in analyzing chest X-ray images
+- Assist doctors and radiologists in analyzing **medical imaging data**
+  (e.g., chest X-ray images, brain MRI scans)
 - Highlight regions of interest using explainable AI techniques
-- Provide probability-based confidence scores for decision support
+- Provide probability-based confidence scores for clinical decision support
 
 MedicalCare+ is **NOT intended to**:
 - Provide a final medical diagnosis
@@ -47,9 +48,9 @@ MedicalCare+ prioritizes safety over performance metrics.
 
 Key safety principles:
 - The system may refuse to provide a prediction when confidence is low
-- Uncertain cases are explicitly flagged
-- Missing a disease is treated as more critical than false alarms
-- Conservative thresholds are used for medical decisions
+- Uncertain cases are explicitly flagged (abstention)
+- Missing a clinically relevant finding is treated as more critical than false alarms
+- Conservative thresholds are used for all medical decision-support outputs
 
 A cautious AI is preferred over a confident but incorrect AI.
 
@@ -59,8 +60,8 @@ A cautious AI is preferred over a confident but incorrect AI.
 
 MedicalCare+ integrates explainable AI techniques (e.g., Grad-CAM) to ensure:
 - Predictions are interpretable
-- Clinicians can see which regions influenced the model
-- Black-box behavior is avoided
+- Clinicians can see which image regions influenced the model
+- Black-box behavior is avoided wherever possible
 
 Explainability is considered a **mandatory requirement**, not an optional feature.
 
@@ -73,13 +74,13 @@ MedicalCare+ acknowledges the risk of bias in medical AI systems.
 Potential bias sources include:
 - Dataset imbalance
 - Demographic differences
-- Imaging device variations
-- Hospital-specific practices
+- Imaging device and protocol variations
+- Institution-specific data collection practices
 
 Mitigation strategies:
 - Performance evaluation across subgroups when data is available
 - Conservative deployment policies
-- Continuous monitoring and feedback loops
+- Continuous monitoring and clinician feedback loops
 
 Bias detection and correction are ongoing responsibilities.
 
@@ -100,23 +101,31 @@ Patient privacy is treated as a fundamental right.
 
 ## 8. Model Limitations
 
-MedicalCare+ explicitly acknowledges its limitations:
+MedicalCare+ explicitly acknowledges its limitations, including but not limited to:
 
-- The system can only detect patterns visible in chest X-ray images
+### Chest X-ray Models
+- Limited to patterns visible in 2D chest X-ray images
 - Early-stage diseases may not be detectable
-- The system does not identify disease causes (e.g., viral vs bacterial)
+- Does not determine disease cause or severity
 - Performance may vary across populations and imaging conditions
 
-Limitations are communicated clearly to users.
+### Brain MRI Models
+- Operate on **2D MRI slices**, not full 3D volumes
+- Do not perform tumor segmentation
+- Do not determine tumor grade, stage, or progression
+- Do not incorporate clinical history or non-imaging data
+- Performance may vary across scanners and acquisition protocols
+
+Limitations are communicated clearly to all users.
 
 ---
 
 ## 9. Accountability & Responsibility
 
 Responsibility is shared as follows:
-- Developers are responsible for safe design and documentation
-- Healthcare professionals are responsible for clinical decisions
-- MedicalCare+ is not liable for misuse outside intended scope
+- Developers are responsible for safe design, testing, and documentation
+- Healthcare professionals are responsible for all clinical decisions
+- MedicalCare+ is not liable for misuse outside its intended scope
 
 Clear accountability boundaries are maintained at all times.
 
@@ -130,7 +139,7 @@ Commitments include:
 - Ongoing evaluation of safety and performance
 - Incorporation of clinician feedback
 - Periodic review of ethical guidelines
-- Immediate response to identified risks
+- Immediate response to identified risks or failures
 
 Ethical compliance is an ongoing process, not a one-time task.
 

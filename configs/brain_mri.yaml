@@ -1,0 +1,169 @@
+# ============================================================
+# brain_mri.yaml
+#
+# Configuration for Multi-Class Brain Tumor MRI Model
+# Project: MedicalCare+
+#
+# TASK:
+#   Multi-class classification (Normal, Glioma, Meningioma, Pituitary)
+#
+# IMPORTANT:
+# - This configuration is for a clinical decision-support model
+# - NOT a diagnostic system
+# - Human-in-the-loop review is mandatory
+# ============================================================
+
+# ------------------------------------------------------------
+# METADATA
+# ------------------------------------------------------------
+project:
+  name: MedicalCare+
+  model_name: brain_tumor_mri
+  version: v1.0.0
+  modality: MRI
+  task_type: multi_class_classification
+
+# ------------------------------------------------------------
+# DATASET CONFIGURATION
+# ------------------------------------------------------------
+dataset:
+  type: brain_mri
+  raw_data_dir: data/raw/brain_mri
+  split_dir: data/splits
+
+  splits:
+    train: brain_mri_train.csv
+    val: brain_mri_val.csv
+    test: brain_mri_test.csv
+
+  # Fixed class contract (DO NOT CHANGE ORDER)
+  classes:
+    0: Normal
+    1: Glioma
+    2: Meningioma
+    3: Pituitary
+
+  num_classes: 4
+
+  # Medical data handling guarantees
+  grayscale: true
+  channels: 3              # Grayscale replicated to 3 channels
+  image_height: 224
+  image_width: 224
+
+# ------------------------------------------------------------
+# MODEL CONFIGURATION
+# ------------------------------------------------------------
+model:
+  backbone:
+    name: densenet121
+    pretrained: true
+    freeze_backbone: true
+
+  head:
+    type: brain_tumor_head
+    num_classes: 4
+    output: logits          # NO softmax inside model
+
+# ------------------------------------------------------------
+# TRAINING CONFIGURATION
+# ------------------------------------------------------------
+training:
+  batch_size: 16
+  epochs: 20
+  learning_rate: 0.0001
+
+  optimizer:
+    type: adam
+    weight_decay: 0.0
+
+  loss:
+    type: cross_entropy
+    label_smoothing: 0.0    # Disabled for medical conservatism
+
+  reproducibility:
+    seed: 42
+    deterministic: true
+    cudnn_benchmark: false
+
+# ------------------------------------------------------------
+# EVALUATION CONFIGURATION
+# ------------------------------------------------------------
+evaluation:
+  metrics:
+    - accuracy
+    - macro_precision
+    - macro_recall
+    - macro_f1
+    - per_class_metrics
+    - confusion_matrix
+
+  abstention:
+    enabled: true
+    uncertainty_lower: 0.20
+    uncertainty_upper: 0.80
+
+  reporting:
+    save_metrics_json: true
+    include_confusion_matrix: true
+
+# ------------------------------------------------------------
+# INFERENCE CONFIGURATION
+# ------------------------------------------------------------
+inference:
+  softmax: true             # Applied OUTSIDE the model
+  top_k: 1
+
+  safety:
+    abstention_enabled: true
+    uncertainty_lower: 0.20
+    uncertainty_upper: 0.80
+
+  output_format:
+    decision_support_only: true
+    include_confidence_score: true
+    include_confidence_level: true
+    include_safety_status: true
+
+# ------------------------------------------------------------
+# EXPLAINABILITY CONFIGURATION
+# ------------------------------------------------------------
+explainability:
+  method: grad_cam
+  enabled: true
+
+  gradcam:
+    target_layer: last_conv
+    colormap: jet
+    overlay_alpha: 0.4
+
+# ------------------------------------------------------------
+# OUTPUT & ARTIFACT MANAGEMENT
+# ------------------------------------------------------------
+artifacts:
+  model_dir: models/brain_tumor/v1.0.0
+  model_file: model.pt
+  metrics_file: metrics.json
+  logs_dir: logs
+  gradcam_output_dir: outputs/gradcam/brain_mri
+
+# ------------------------------------------------------------
+# MEDICAL SAFETY & COMPLIANCE
+# ------------------------------------------------------------
+safety_and_compliance:
+  intended_use: clinical_decision_support
+  diagnosis_allowed: false
+  human_review_required: true
+
+  disclaimers:
+    - "This system does NOT provide medical diagnoses."
+    - "Predictions must be reviewed by a qualified clinician."
+    - "AI outputs are probabilistic and may be uncertain."
+
+  regulatory_notes:
+    - "Not a certified medical device."
+    - "For research and clinical support use only."
+
+# ------------------------------------------------------------
+# END OF CONFIG
+# ------------------------------------------------------------

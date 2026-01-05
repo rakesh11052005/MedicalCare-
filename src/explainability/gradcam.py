@@ -4,11 +4,12 @@ gradcam.py
 Industrial-grade Grad-CAM implementation for MedicalCare+.
 
 Design guarantees:
-- Multi-label safe (one disease at a time)
+- Supports single-disease, multi-disease, and multi-class models
 - Uses raw logits (NO softmax / sigmoid)
 - Read-only (does not alter model behavior)
 - Deterministic and auditable
 - Compatible with DenseNet / ResNet backbones
+- Safe default behavior for clinical explainability
 """
 
 from typing import Optional
@@ -78,14 +79,21 @@ class GradCAM:
     def generate(
         self,
         input_tensor: torch.Tensor,
-        target_index: int
+        target_index: Optional[int] = None
     ) -> np.ndarray:
         """
-        Generate Grad-CAM heatmap for a specific disease.
+        Generate Grad-CAM heatmap.
 
         Args:
-            input_tensor (torch.Tensor): Shape (1, C, H, W)
-            target_index (int): Disease index to explain
+            input_tensor (torch.Tensor):
+                Shape (1, C, H, W)
+
+            target_index (Optional[int]):
+                - Explicit index to explain (recommended for audits)
+                - If None:
+                    • Single-disease  → index 0
+                    • Multi-class     → argmax(logits)
+                    • Multi-label     → argmax(logits)
 
         Returns:
             np.ndarray: Normalized heatmap (H, W)
@@ -99,16 +107,12 @@ class GradCAM:
                 "Grad-CAM expects input tensor of shape (1, C, H, W)"
             )
 
-        logger.info(
-            f"Generating Grad-CAM for target_index={target_index}"
-        )
+        logger.info("Generating Grad-CAM heatmap")
 
-        # Ensure model is in eval mode
         self.model.eval()
 
-        # Ensure gradients are enabled
+        # Enable gradients
         input_tensor = input_tensor.requires_grad_(True)
-
         self.model.zero_grad(set_to_none=True)
 
         # --------------------------------------------------
@@ -118,16 +122,28 @@ class GradCAM:
 
         if logits.ndim != 2:
             raise RuntimeError(
-                "Model output must be 2D (B, num_findings)"
+                "Model output must be 2D (B, num_outputs)"
             )
 
-        if target_index < 0 or target_index >= logits.shape[1]:
+        num_outputs = logits.shape[1]
+
+        # --------------------------------------------------
+        # Determine target index safely
+        # --------------------------------------------------
+        if target_index is None:
+            target_index = int(torch.argmax(logits, dim=1).item())
+            logger.info(
+                f"No target_index provided → using argmax={target_index}"
+            )
+
+        if target_index < 0 or target_index >= num_outputs:
             raise IndexError(
-                f"target_index {target_index} out of range"
+                f"target_index {target_index} out of range "
+                f"(num_outputs={num_outputs})"
             )
 
         # --------------------------------------------------
-        # Select ONE disease logit (CRITICAL)
+        # Select scalar score (CRITICAL)
         # --------------------------------------------------
         score = logits[:, target_index].sum()
 
@@ -159,8 +175,7 @@ class GradCAM:
         # --------------------------------------------------
         cam = (weights * self._activations).sum(dim=1)
 
-        # Apply ReLU (Grad-CAM standard)
-        cam = F.relu(cam)
+        cam = F.relu(cam)  # Grad-CAM standard
 
         # --------------------------------------------------
         # Normalize heatmap
@@ -177,6 +192,8 @@ class GradCAM:
 
         heatmap = cam.detach().cpu().numpy()
 
-        logger.info("Grad-CAM heatmap generated successfully")
+        logger.info(
+            f"Grad-CAM heatmap generated (target_index={target_index})"
+        )
 
         return heatmap

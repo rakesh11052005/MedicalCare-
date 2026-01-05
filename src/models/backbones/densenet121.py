@@ -1,5 +1,3 @@
-# File: MedicalCare+/src/models/backbones/densenet121.py
-
 """
 densenet121.py
 
@@ -10,7 +8,8 @@ Design goals (industrial & medical-grade):
 - Explicit last convolutional layer exposure (Grad-CAM compatible)
 - Freeze / unfreeze control for transfer learning
 - Deterministic forward behavior
-- Disease-agnostic (supports multi-disease heads)
+- Modality-agnostic (Chest X-ray, Brain MRI)
+- Disease-agnostic (supports single, multi-disease, and multi-class heads)
 
 IMPORTANT:
 This backbone NEVER performs classification.
@@ -32,13 +31,17 @@ logger = setup_logger(__name__)
 
 class DenseNet121Backbone(nn.Module):
     """
-    DenseNet-121 backbone for chest X-ray feature extraction.
+    DenseNet-121 convolutional backbone for medical image feature extraction.
+
+    Supported modalities:
+        - Chest X-ray
+        - Brain MRI (2D slices)
     """
 
     def __init__(
         self,
         pretrained: bool = True,
-        freeze: bool = True
+        freeze: bool = True,
     ):
         """
         Initialize DenseNet-121 backbone.
@@ -72,7 +75,9 @@ class DenseNet121Backbone(nn.Module):
         # --------------------------------------------------
         # Identify last convolutional layer (Grad-CAM)
         # --------------------------------------------------
-        self._last_conv_layer = self.features.denseblock4.denselayer16.conv2
+        self._last_conv_layer = (
+            self.features.denseblock4.denselayer16.conv2
+        )
 
         # --------------------------------------------------
         # Freeze parameters if requested
@@ -85,7 +90,8 @@ class DenseNet121Backbone(nn.Module):
             logger.info("Backbone parameters are trainable")
 
         logger.info(
-            f"DenseNet-121 backbone ready | out_features={self.out_features}"
+            f"DenseNet-121 backbone ready | "
+            f"out_features={self.out_features}"
         )
 
     # ==================================================

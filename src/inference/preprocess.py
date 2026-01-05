@@ -1,5 +1,3 @@
-# File: MedicalCare+/src/inference/preprocess.py
-
 """
 preprocess.py
 
@@ -15,6 +13,7 @@ Medical guarantees:
 - No data augmentation at inference
 - No normalization mismatch with training
 - ImageNet-compatible channel handling
+- Modality-agnostic (Chest X-ray, Brain MRI)
 """
 
 import os
@@ -23,12 +22,12 @@ import torch
 from src.common.logging_utils import setup_logger
 from src.common.image_utils import (
     load_xray_image,
-    validate_xray_image
+    validate_xray_image,
 )
 from src.common.constants import (
     IMAGE_HEIGHT,
     IMAGE_WIDTH,
-    IMAGE_CHANNELS
+    IMAGE_CHANNELS,
 )
 
 # --------------------------------------------------
@@ -39,16 +38,20 @@ logger = setup_logger(__name__)
 
 def preprocess_for_inference(
     image_path: str,
-    device: str = "cpu"
+    device: str = "cpu",
 ) -> torch.Tensor:
     """
-    Preprocesses a chest X-ray image for model inference.
+    Preprocesses a medical image for model inference.
 
     This function is the ONLY preprocessing entry point
     that inference code should use.
 
+    Supported modalities:
+        - Chest X-ray
+        - Brain MRI (2D slices)
+
     Args:
-        image_path (str): Path to chest X-ray image
+        image_path (str): Path to medical image
         device (str): cpu or cuda
 
     Returns:
@@ -67,11 +70,14 @@ def preprocess_for_inference(
 
     if not os.path.isfile(image_path):
         raise FileNotFoundError(
-            f"X-ray image file does not exist:\n{image_path}"
+            f"Medical image file does not exist:\n{image_path}"
         )
 
     # --------------------------------------------------
     # Load image using shared utility
+    # NOTE:
+    # load_xray_image() is intentionally reused for MRI
+    # to guarantee identical preprocessing across modalities
     # --------------------------------------------------
     image_tensor = load_xray_image(image_path)
 
@@ -80,7 +86,7 @@ def preprocess_for_inference(
     # --------------------------------------------------
     if not validate_xray_image(image_tensor):
         raise ValueError(
-            "Preprocessed X-ray image failed validation checks.\n"
+            "Preprocessed medical image failed validation checks.\n"
             f"Expected shape: ({IMAGE_CHANNELS}, "
             f"{IMAGE_HEIGHT}, {IMAGE_WIDTH})"
         )

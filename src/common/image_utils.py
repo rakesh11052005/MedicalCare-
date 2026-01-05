@@ -1,21 +1,22 @@
-# File: MedicalCare+/src/common/image_utils.py
-
 """
 image_utils.py
 
-MedicalCare+ — Chest X-ray image preprocessing utilities.
+MedicalCare+ — Medical image preprocessing utilities.
+
+CRITICAL FILE:
+This module defines the ONLY approved image preprocessing
+path for ALL modalities in MedicalCare+.
+
+Supported modalities:
+- Chest X-ray (grayscale)
+- Brain MRI (2D slices)
 
 Industrial & clinical guarantees:
+- Explicit modality handling (NO guessing)
 - Absolute path resolution
-- Explicit file validation
 - Deterministic preprocessing
 - ImageNet-compatible tensor output
-- Safe failure modes (no silent errors)
-
-IMPORTANT MEDICAL NOTE:
-- Chest X-rays are grayscale
-- ImageNet-pretrained CNNs expect 3-channel input
-- Grayscale images are replicated → (3, H, W)
+- Safe failure modes (fail fast, no silent errors)
 """
 
 import os
@@ -26,102 +27,130 @@ import torch
 from src.common.constants import (
     IMAGE_HEIGHT,
     IMAGE_WIDTH,
-    IMAGE_CHANNELS
+    IMAGE_CHANNELS,
 )
 
-# --------------------------------------------------
-# Image loading & preprocessing
-# --------------------------------------------------
-def load_xray_image(image_path: str) -> torch.Tensor:
+# ==================================================
+# PUBLIC API — IMAGE LOADING
+# ==================================================
+def load_medical_image(
+    image_path: str,
+    modality: str,
+) -> torch.Tensor:
     """
-    Loads and preprocesses a chest X-ray image.
-
-    Steps:
-    1. Resolve absolute path
-    2. Verify file existence
-    3. Load image in grayscale
-    4. Resize to model input size
-    5. Normalize pixel values
-    6. Convert to ImageNet-compatible 3-channel tensor
+    Loads and preprocesses a medical image.
 
     Args:
-        image_path (str): Path to X-ray image file
+        image_path (str): Path to image file
+        modality (str):
+            - "xray"
+            - "brain_mri"
 
     Returns:
         torch.Tensor:
             Shape → (C, H, W)
-            C = IMAGE_CHANNELS (expected: 3)
     """
 
-    # --------------------------------------------------
-    # Resolve absolute path (critical for CLI / APIs)
-    # --------------------------------------------------
     image_path = os.path.abspath(image_path)
 
-    # --------------------------------------------------
-    # Validate file existence
-    # --------------------------------------------------
     if not os.path.isfile(image_path):
         raise FileNotFoundError(
-            f"X-ray image file not found:\n{image_path}"
+            f"Medical image file not found:\n{image_path}"
         )
 
-    # --------------------------------------------------
-    # Load image (grayscale)
-    # --------------------------------------------------
+    modality = modality.lower()
+
+    if modality == "xray":
+        return _load_xray(image_path)
+
+    if modality == "brain_mri":
+        return _load_brain_mri(image_path)
+
+    raise ValueError(
+        f"Unsupported modality '{modality}'. "
+        "Supported: xray, brain_mri"
+    )
+
+
+# ==================================================
+# MODALITY-SPECIFIC LOADERS (INTERNAL)
+# ==================================================
+def _load_xray(image_path: str) -> torch.Tensor:
+    """
+    Chest X-ray preprocessing (grayscale).
+    """
+
     image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
     if image is None:
         raise ValueError(
-            f"Failed to read image using OpenCV:\n{image_path}"
+            f"Failed to read X-ray image:\n{image_path}"
         )
 
-    # --------------------------------------------------
-    # Resize (deterministic)
-    # --------------------------------------------------
     image = cv2.resize(
         image,
         (IMAGE_WIDTH, IMAGE_HEIGHT),
         interpolation=cv2.INTER_AREA
     )
 
-    # --------------------------------------------------
-    # Normalize to [0, 1]
-    # --------------------------------------------------
-    image = image.astype(np.float32) / 255.0  # (H, W)
+    image = image.astype(np.float32) / 255.0
 
-    # --------------------------------------------------
-    # Convert grayscale → multi-channel
-    # --------------------------------------------------
-    if IMAGE_CHANNELS == 3:
-        # Replicate grayscale channel (ImageNet standard)
-        image = np.stack([image, image, image], axis=0)
-    else:
-        # Fallback (not recommended for pretrained models)
-        image = np.expand_dims(image, axis=0)
+    # Replicate grayscale → 3 channels (ImageNet standard)
+    image = np.stack([image, image, image], axis=0)
 
-    # --------------------------------------------------
-    # Convert to PyTorch tensor
-    # --------------------------------------------------
-    image_tensor = torch.from_numpy(image).float()
-
-    return image_tensor
+    return torch.from_numpy(image).float()
 
 
-# --------------------------------------------------
-# Validation utility
-# --------------------------------------------------
-def validate_xray_image(image_tensor: torch.Tensor) -> bool:
+def _load_brain_mri(image_path: str) -> torch.Tensor:
     """
-    Validates a preprocessed X-ray tensor.
+    Brain MRI preprocessing (2D slice).
 
-    This function is used as a safety gate before inference.
+    Notes:
+    - MRI intensity ranges vary
+    - Normalization is per-image (safe default)
+    """
 
-    Args:
-        image_tensor (torch.Tensor)
+    image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
-    Returns:
-        bool: True if tensor is valid
+    if image is None:
+        raise ValueError(
+            f"Failed to read Brain MRI image:\n{image_path}"
+        )
+
+    image = cv2.resize(
+        image,
+        (IMAGE_WIDTH, IMAGE_HEIGHT),
+        interpolation=cv2.INTER_AREA
+    )
+
+    image = image.astype(np.float32)
+
+    # Per-image normalization (robust for MRI)
+    min_val = image.min()
+    max_val = image.max()
+
+    if max_val > min_val:
+        image = (image - min_val) / (max_val - min_val)
+    else:
+        image = np.zeros_like(image)
+
+    # Replicate to 3 channels
+    image = np.stack([image, image, image], axis=0)
+
+    return torch.from_numpy(image).float()
+
+
+# ==================================================
+# VALIDATION (MODALITY-AGNOSTIC)
+# ==================================================
+def validate_medical_image(image_tensor: torch.Tensor) -> bool:
+    """
+    Validates a preprocessed medical image tensor.
+
+    Used as a hard safety gate before:
+    - Training
+    - Inference
+    - Explainability
     """
 
     if not isinstance(image_tensor, torch.Tensor):
@@ -143,3 +172,21 @@ def validate_xray_image(image_tensor: torch.Tensor) -> bool:
         return False
 
     return True
+
+
+# ==================================================
+# BACKWARD-COMPATIBILITY ALIASES (CRITICAL)
+# ==================================================
+
+"""
+DO NOT REMOVE.
+These keep existing X-ray pipelines working
+while migrating to modality-aware loaders.
+"""
+
+def load_xray_image(image_path: str) -> torch.Tensor:
+    return load_medical_image(image_path, modality="xray")
+
+
+def validate_xray_image(image_tensor: torch.Tensor) -> bool:
+    return validate_medical_image(image_tensor)
